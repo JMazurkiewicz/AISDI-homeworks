@@ -268,7 +268,7 @@ int main(int argc, char* argv[]) {
     }
 
     assert(test_vector.size() == test_tree.size());
-    std::cout << "Tree was successfully fille with values from 0 to "
+    std::cout << "Tree was successfully filled with values from 0 to "
               << test_vector_size << '.' << std::endl;
 
     shuffle_test_vector(test_vector);
