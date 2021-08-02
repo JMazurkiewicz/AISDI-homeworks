@@ -246,23 +246,17 @@ std::vector<int> generate_test_vector(std::size_t size) {
     return test_vector;
 }
 
-/*
- * Pierwszy argument programu oznacza rozmiar generowanego
- * wektora (domyślnie jest to 2048). Elementy z wektora są
- * następnie umieszczane w drzewie. Po tym etapie rozmiar
- * wektora powinien być równy rozmiarowi drzewa. Później są
- * z niego usuwane w przypadkowej kolejności (drzewo po tym
- * procesie powinno być puste, tj. test_tree.empty() == true)
- */
-
+// First program argument is the size of random generated data (2048 by
+// default).
 int main(int argc, char* argv[]) {
     std::size_t test_vector_size = 2'048;
     if(argc >= 2) {
         try {
             test_vector_size = std::stoull(argv[1]);
         } catch(std::exception& e) {
-            std::cerr << "exception occured: " << e.what() << '\n';
-            std::cerr << "test_vector_size := " << test_vector_size << '\n';
+            std::cerr << "Invalid program argument: " << e.what() << ".\n";
+            std::cerr << "The size of random generated data will be "
+                      << test_vector_size << ".\n";
         }
     }
 
@@ -274,8 +268,8 @@ int main(int argc, char* argv[]) {
     }
 
     assert(test_vector.size() == test_tree.size());
-    std::cout << "drzewo zostalo pomyslnie wypelnione liczbami z zakresu 0..";
-    std::cout << test_vector_size << std::endl;
+    std::cout << "Tree was successfully fille with values from 0 to "
+              << test_vector_size << '.' << std::endl;
 
     shuffle_test_vector(test_vector);
     for(int e : test_vector) {
@@ -283,6 +277,5 @@ int main(int argc, char* argv[]) {
     }
 
     assert(test_tree.empty() == true);
-    std::cout << "drzewo zostalo pomyslnie oproznione przy uzyciu"
-                 " wywolan funkcji erase na losowych elementach";
+    std::cout << "Tree was successfully emptied.\n"
 }
