@@ -341,7 +341,7 @@ public:
     }
 };
 
-bool isStandardDeckStabilySorted(const Deck& deck,
+bool isStandardDeckStablySorted(const Deck& deck,
                                  const std::vector<Card>& shuffledCollection) {
     for(auto it = deck.begin(); it != deck.end();) {
         auto jt = shuffledCollection.begin();
@@ -372,52 +372,42 @@ void genericTest(std::size_t testCount) {
         deck.stableSelectionSort();
 
         if(!std::is_sorted(deck.begin(), deck.end())) {
-            std::cout << "test " << testId << ":\t";
-            std::cout << "kolekcja nie zostala posortowana\n";
+            std::cout << "Test " << testId << ":\t";
+            std::cout << "Deck was not sorted.\n";
         }
 
-        if(!isStandardDeckStabilySorted(deck, shuffledCollection)) {
-            std::cout << "test " << testId << ":\t";
-            std::cout << "kolekcja nie zostala stabilnie posortowana\n";
+        if(!isStandardDeckStablySorted(deck, shuffledCollection)) {
+            std::cout << "Test " << testId << ":\t";
+            std::cout << "Deck was not stably sorted.\n";
         }
     }
 }
 
 void interactiveTest() {
-    struct PolishBool : std::numpunct<char> {
-        string_type do_truename() const {
-            return "tak";
-        }
-        string_type do_falsename() const {
-            return "nie";
-        }
-    };
-    std::cout.imbue(std::locale{std::cout.getloc(), new PolishBool});
-
-    std::cout << "Oznaczenie: (figura|kolor)\n";
+    std::cout << "Scheme: (rank|suite)\n";
 
     Deck deck = Deck::generateStandardDeck();
     assert(deck.size() == 52);
-    std::cout << "Wstepnie poukladana talia:\n";
+    std::cout << "Input deck:\n";
     std::cout << deck << '\n';
 
     std::mt19937 generator{std::random_device{}()};
     deck.shuffle(generator);
-    std::cout << "Pomieszana talia:\n";
+    std::cout << "Shuffled deck:\n";
     std::cout << deck << '\n';
     std::vector shuffledCollection(deck.begin(), deck.end());
 
     deck.stableSelectionSort();
-    std::cout << "Stabilnie posortowana talia:\n";
+    std::cout << "Stably sorted deck:\n";
     std::cout << deck << '\n';
 
     std::cout << std::boolalpha;
-    std::cout << "Czy talia jest na pewno posortowana: ";
+    std::cout << "Is deck sorted: ";
     std::cout << std::is_sorted(deck.begin(), deck.end());
     std::cout << '\n';
 
-    std::cout << "Czy talia jest na pewno stabilnie posortowana: ";
-    std::cout << isStandardDeckStabilySorted(deck, shuffledCollection) << '\n';
+    std::cout << "Is deck stably sorted: ";
+    std::cout << isStandardDeckStablySorted(deck, shuffledCollection) << '\n';
 }
 
 int main(int argc, char* argv[]) {
@@ -425,9 +415,8 @@ int main(int argc, char* argv[]) {
         try {
             genericTest(std::stoull(argv[1]));
         } catch(std::exception& e) {
-            std::cerr << "wystapil blad: " << e.what() << '\n';
+            std::cerr << "Fatal error: " << e.what() << '\n';
         }
-
     } else {
         interactiveTest();
     }

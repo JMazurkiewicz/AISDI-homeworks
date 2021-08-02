@@ -277,5 +277,5 @@ int main(int argc, char* argv[]) {
     }
 
     assert(test_tree.empty() == true);
-    std::cout << "Tree was successfully emptied.\n"
+    std::cout << "Tree was successfully emptied.\n";
 }
