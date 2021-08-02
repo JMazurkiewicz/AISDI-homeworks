@@ -342,7 +342,7 @@ public:
 };
 
 bool isStandardDeckStablySorted(const Deck& deck,
-                                 const std::vector<Card>& shuffledCollection) {
+                                const std::vector<Card>& shuffledCollection) {
     for(auto it = deck.begin(); it != deck.end();) {
         auto jt = shuffledCollection.begin();
         for(int i = 0; i < 4; ++i) {
@@ -359,9 +359,11 @@ bool isStandardDeckStablySorted(const Deck& deck,
     return true;
 }
 
-void genericTest(std::size_t testCount) {
+int genericTest(std::size_t testCount) {
     Deck deck = Deck::generateStandardDeck();
     assert(deck.size() == 52);
+
+    int testStatus = 0;
 
     std::mt19937 generator{std::random_device{}()};
 
@@ -374,16 +376,22 @@ void genericTest(std::size_t testCount) {
         if(!std::is_sorted(deck.begin(), deck.end())) {
             std::cout << "Test " << testId << ":\t";
             std::cout << "Deck was not sorted.\n";
+            testStatus = 1;
         }
 
         if(!isStandardDeckStablySorted(deck, shuffledCollection)) {
             std::cout << "Test " << testId << ":\t";
             std::cout << "Deck was not stably sorted.\n";
+            testStatus = 1;
         }
     }
+
+    return testStatus;
 }
 
-void interactiveTest() {
+int interactiveTest() {
+    int testStatus = 0;
+
     std::cout << "Scheme: (rank|suite)\n";
 
     Deck deck = Deck::generateStandardDeck();
@@ -401,23 +409,34 @@ void interactiveTest() {
     std::cout << "Stably sorted deck:\n";
     std::cout << deck << '\n';
 
-    std::cout << std::boolalpha;
-    std::cout << "Is deck sorted: ";
-    std::cout << std::is_sorted(deck.begin(), deck.end());
-    std::cout << '\n';
+    const bool isDeckSorted = std::is_sorted(deck.begin(), deck.end());
+    std::cout << std::boolalpha << "Is deck sorted: " << isDeckSorted << ".\n";
+    if(!isDeckSorted) {
+        testStatus = 1;
+    }
 
-    std::cout << "Is deck stably sorted: ";
-    std::cout << isStandardDeckStablySorted(deck, shuffledCollection) << '\n';
+    const bool isDeckStablySorted =
+        isStandardDeckStablySorted(deck, shuffledCollection);
+    std::cout << "Is deck stably sorted: " << isDeckStablySorted << ".\n";
+    if(!isDeckStablySorted) {
+        testStatus = 1;
+    }
+
+    return testStatus;
 }
 
 int main(int argc, char* argv[]) {
+    int status = 0;
+
     if(argc >= 2) {
         try {
-            genericTest(std::stoull(argv[1]));
+            status = genericTest(std::stoull(argv[1]));
         } catch(std::exception& e) {
             std::cerr << "Fatal error: " << e.what() << '\n';
         }
     } else {
-        interactiveTest();
+        status = interactiveTest();
     }
+
+    return status;
 }
