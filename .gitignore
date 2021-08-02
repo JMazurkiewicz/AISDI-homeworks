@@ -1,0 +1,10 @@
+# Binary files
+*.o
+*.out
+*.obj
+*.exe
+
+# Users directoriess
+[Bb]uild/
+[Bb]uild?/
+.vs*
