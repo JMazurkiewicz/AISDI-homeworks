@@ -1,5 +1,7 @@
 # Homeworks for "Algorithms and data structures" course
 
+[![CI](https://github.com/JMazurkiewicz/AISDI-homeworks/actions/workflows/CI.yaml/badge.svg)](https://github.com/JMazurkiewicz/AISDI-homeworks/actions/workflows/CI.yaml)
+
 ## Building
 
 To build homeworks use CMake:
